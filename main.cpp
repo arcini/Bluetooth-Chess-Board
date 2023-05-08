@@ -1,11 +1,13 @@
 #include "mbed.h"
+#include <string>
 #include <cstdio>
 #include <vector>
 
 
 BusOut mux_1_select(PA_0, PA_1, PA_2, PA_3);
 BusOut mux_2_select(PA_4, PA_5, PA_6, PA_7);
-BusOut mux_3_select(PA_8, PA_9, PA_10, PA_11);
+// PA_9 and PA_10 are used for UART (serial monitor), so PB 6 and 7 used instead.
+BusOut mux_3_select(PA_8, PB_6, PB_7, PA_11); 
 BusOut mux_4_select(PA_12, PA_13, PA_14, PA_15);
 
 
@@ -27,7 +29,7 @@ int main()
         print_board();
 
         // Wait for a second
-        ThisThread::sleep_for(1s);
+        ThisThread::sleep_for(500ms);
     }
 }
 
@@ -44,29 +46,29 @@ void load_board() {
             (*mux_selectors[i]).write(s);
             
             // Board representation math
-            col = s >= 8? i + 1: i;
-            row = s % 8;
+            col = 7 - (s % 8);
+            row = s >= 8 ? 2 * i + 1 : 2 * i;
 
             // Read the value for the square and store in board array
             // 0 (LL low): piece present
             // 1 (LL high): piece not present
             // If piece is present....
-            board[col][row] = mux_outputs[i].read() == 0 ? true : false;
+            board[row][col] = mux_outputs[i].read() == 0 ? true : false;
         }
     }
 }
 
 void print_board() {
-    puts("--------");
+    std::string out = "--------\n";
     for (int row = 0; row < 8; ++row) {
         for (int col = 0; col < 8; ++col) {
             if (board[row][col] == true) {
-                printf("▣");
+                out += "▣ ";
             } else {
-                printf("□");
+                out += "□ ";
             }
         }
-        printf("\n");
+        out += "\n";
     }
-    puts("--------");
+    printf("%s", out.c_str());
 }

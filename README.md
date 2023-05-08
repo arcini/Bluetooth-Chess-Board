@@ -3,11 +3,11 @@ This repository contains the firmware for an in-progress electronic chess board 
 
 # Tooling And Devices
 
-Mbed OS 6: Firmware backbone
+RTOS: Mbed OS 6
 
-STM32WB55RG: MCU
+MCU: STM32WB55RG
 
-ST NUCLEO-WB15CC: Development board for MCU
+MCU Development Board: ST NUCLEO-WB15CC
 
 
 # Project Members
