@@ -106,30 +106,3 @@ void mux_1_slow() {
         ThisThread::sleep_for(200ms);
     }
 }
-
-
-void test_specific_square() {
-    printf("Enter integer of square to select (0-63)\n");
-    char square;
-    square = getchar();
-    printf("Selecting square: %d\n (q to quit)", square);
-
-    int mux_selected = square / 16;
-    int channel_selected = square % 16;
-
-    (*mux_selectors[mux_selected]).write(channel_selected);
-    ThisThread::sleep_for(20ms);
-
-    while (true) {
-        if (mux_outputs[mux_selected].read() == 0) {
-            const char * has_piece_string = mux_outputs[mux_selected].read() == 0 ? "true" : "false";
-            printf("output: %s\n", has_piece_string);
-        }
-
-        char response = getchar();
-
-        if (response == 'q') {
-            break;
-        }
-    }
-}
