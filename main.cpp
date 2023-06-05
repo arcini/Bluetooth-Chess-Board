@@ -25,7 +25,6 @@ BusOut* mux_selectors[] = {&mux_1_select, &mux_2_select, &mux_3_select, &mux_4_s
 bool set_and_read_mux(int mux_index, int channel);
 void load_board();
 void print_board();
-void mux_1_slow();
 
 
 // main() runs in its own thread in the OS
@@ -96,13 +95,4 @@ void print_board() {
         out += "\n";
     }
     printf("%s", out.c_str());
-}
-
-void mux_1_slow() {
-    for (int s = 0; s < 16; ++s) {
-        (*mux_selectors[0]).write(s);
-
-        printf("%d\n", s);
-        ThisThread::sleep_for(200ms);
-    }
 }
