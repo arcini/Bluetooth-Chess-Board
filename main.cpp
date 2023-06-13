@@ -27,6 +27,6 @@ int main()
         print_board();
 
         // Wait for a second
-        ThisThread::sleep_for(400ms);
+        ThisThread::sleep_for(800ms);
     }
 }

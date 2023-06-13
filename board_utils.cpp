@@ -1,20 +1,18 @@
 #include "board_utils.h"
-#include <string>
-#include <cstdio>
 
 // ----- PORT INITIALIZATION -----
 BusOut mux_1_select(PB_8, PA_1, PA_2, PA_3);
 BusOut mux_2_select(PA_4, PA_5, PA_6, PA_7);
 
 // PA_9 and PA_10 are used for UART (serial monitor), so PB 6 and 7 used instead.
-BusOut mux_3_select(PA_8, PB_6, PB_7, PA_11); 
-BusOut mux_4_select(PA_12, PA_13, PA_14, PA_15);
+BusOut mux_3_select(PA_8, PB_13, PB_14, PA_0); 
+BusOut mux_4_select(PA_9, PA_13, PA_14, PA_15);
 
 
 // ----- GLOBAL VARS -----
 // Port containers
 DigitalOut mux_enables = PB_9;
-DigitalIn mux_outputs[] = {PB_0, PB_1, PB_2, PB_3};
+DigitalIn mux_outputs[] = {PB_0, PB_1, PB_2, PB_4};
 BusOut* mux_selectors[] = {&mux_1_select, &mux_2_select, &mux_3_select, &mux_4_select};
 
 // Data structures
@@ -80,16 +78,13 @@ bool load_board_check_update() {
 }
 
 void print_board() {
-    std::string out = "--------\n";
+    char out[] = "00000000\n00000000\n00000000\n00000000\n00000000\n00000000\n00000000\n00000000\n--------\n";
     for (int row = 0; row < 8; ++row) {
         for (int col = 0; col < 8; ++col) {
             if (board[row][col] == true) {
-                out += "▣ ";
-            } else {
-                out += "□ ";
+                out[row * 9 + col] = '@';
             }
         }
-        out += "\n";
     }
-    printf("%s", out.c_str());
+    printf("%s", out);
 }
